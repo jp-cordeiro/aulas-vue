@@ -24,5 +24,11 @@
 
 ul{
     margin: .5rem;
+    list-style: none;
+}
+
+.selected{
+    background-color: #000;
+    color: #fff;
 }
 

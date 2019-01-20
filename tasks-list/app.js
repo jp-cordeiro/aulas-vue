@@ -9,7 +9,9 @@ const taskList = {
         <h2>{{subtitle}}</h2>
 
         <div>  
-            <button @click="addTask()">Add task</button>       
+            <button @click="addTask()">Add task</button> 
+            <button @click="removeTask()">Remove task</button> 
+            <button @click="invertOrderList()">Invert order list</button>    
             <button @click="clearList()">Clear list</button>          
         </div>
 
@@ -20,9 +22,9 @@ const taskList = {
             <input tabindex="1" type="text" placeholder="Task description" v-model="task" v-on:keyup.enter="addTask()">
         </div>
 
-        <ul v-for="task in tasks">
-            <li class="task-item">
-                {{task}}
+        <ul ref="tasksList">
+            <li v-for="(task,key) in tasks" v-bind:id="key" ref="taskItem" @click="addToCache($event)" class="task-item">
+                {{key + 1}} - {{task}}
             </li>
         </ul>
         
@@ -35,8 +37,12 @@ const taskList = {
             subtitle: "Set a description",
             message:'',
             task:'',
-            tasks:[]
+            tasks:[],
+            cacheTask:false
         }
+    },
+    refs:{
+
     },
     methods:{
         addTask(){
@@ -45,7 +51,17 @@ const taskList = {
                 return;
             }
             this.tasks.push(this.task)
-            this.task = '';
+        },
+        addToCache(event){
+            this.cacheTask = event.target
+        },
+        removeTask(){
+            this.tasks.length != 0 ? this.tasks.splice(this.cacheTask.id,1) : alert('The list is empty')
+        },
+        invertOrderList(){
+            if(this.tasks.length > 1){
+                this.tasks.reverse()
+            }
         },
         clearList: function(){
             this.tasks = [];
@@ -54,6 +70,13 @@ const taskList = {
     watch:{
         tasks(){
             this.message = this.tasks.length > 0 ? `${this.tasks.length} complete task(s)` : 'No tasks defined.'
+            this.task = '';
+        },
+        cacheTask(newEvent,oldEvent){
+            if(oldEvent){
+                oldEvent.classList.remove('selected')
+            }
+            newEvent.classList.add('selected')
         }
     },
     mounted() {
