@@ -41,9 +41,6 @@ const taskList = {
             cacheTask:false
         }
     },
-    refs:{
-
-    },
     methods:{
         addTask(){
             if(this.task == ''){
