@@ -77,6 +77,7 @@ const taskList = {
         }
     },
     mounted() {
+
         // setInterval(()=>{
         //     this.tasks.push(`Task ${this.tasks.length + 1} - This is a test`)
         // },3000)
